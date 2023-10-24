@@ -40,4 +40,4 @@ following steps. Contact your facilitator if you run into issues.
 2. Clone this repository: `git clone https://github.com/AIS-UCLA/cv-fellowship.git`
 3. Create a conda environment: `conda create --name ENV_NAME python=3.10 && conda activate ENV_NAME`
 4. Verify installation: `python -V` should return something like `Python 3.10.12`
-5. Install dependencies `pip install pytest torch jupyter keras tensorflow matplotlib`
+5. Install dependencies `pip install pytest torch jupyter keras tensorflow matplotlib scikit-learn`
