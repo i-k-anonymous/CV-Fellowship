@@ -46,5 +46,13 @@ files. You can test your work by running `python -m pytest`.
 
 ### Step Two
 
-Now that we have a working framework, we can create our neural network. Open
-`mnist.ipynb` by running `jupyter notebook` (or open it in VSCode).
+Now that we have a working framework, let's put it to the test and create and
+train a neural network! Open `iris.ipynb` by running `jupyter notebook` (or open
+it in VSCode).
+
+### Step Three (Optional)
+
+If you are interested, check out `mnist.ipynb` to explore a more advanced neural
+network that can classify handwritten digits, just like the model from 3b1b!
+This step is optional as we will be implementing this model in PyTorch as well,
+since our implementation is a bit too slow to train with.
