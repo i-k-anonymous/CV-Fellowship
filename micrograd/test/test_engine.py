@@ -1,6 +1,112 @@
 import torch
 from micrograd.engine import Value
 
+tol = 1e-6
+
+def test_add():
+  xmg = Value(1.0)
+  ymg = xmg + Value(2.0)
+  ymg.backward()
+
+  xpt = torch.Tensor([1.0])
+  xpt.requires_grad = True
+  ypt = xpt + torch.Tensor([2.0])
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_mul():
+  xmg = Value(4.0)
+  ymg = xmg * Value(2.0)
+  ymg.backward()
+
+  xpt = torch.Tensor([4.0])
+  xpt.requires_grad = True
+  ypt = xpt * torch.Tensor([2.0])
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_pow():
+  xmg = Value(-4.0)
+  ymg = xmg**3
+  ymg.backward()
+
+  xpt = torch.Tensor([-4.0])
+  xpt.requires_grad = True
+  ypt = xpt**3
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_relu_neg():
+  xmg = Value(-4.0)
+  ymg = xmg.relu()
+  ymg.backward()
+
+  xpt = torch.Tensor([-4.0])
+  xpt.requires_grad = True
+  ypt = xpt.relu()
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_relu_pos():
+  xmg = Value(4.0)
+  ymg = xmg.relu()
+  ymg.backward()
+
+  xpt = torch.Tensor([4.0])
+  xpt.requires_grad = True
+  ypt = xpt.relu()
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_relu_zero():
+  xmg = Value(0.0)
+  ymg = xmg.relu()
+  ymg.backward()
+
+  xpt = torch.Tensor([0.0])
+  xpt.requires_grad = True
+  ypt = xpt.relu()
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
+def test_exp():
+  xmg = Value(1.0)
+  ymg = xmg.exp()
+  ymg.backward()
+
+  xpt = torch.Tensor([1.0])
+  xpt.requires_grad = True
+  ypt = torch.exp(xpt)
+  ypt.backward()
+
+  assert abs(ymg.data - ypt.data.item()) < tol, "forward pass went wrong"
+  assert abs(xmg.grad - xpt.grad.item()) < tol, "backward pass went wrong"
+
+def test_log():
+  xmg = Value(1.0)
+  ymg = xmg.log()
+  ymg.backward()
+
+  xpt = torch.Tensor([1.0])
+  xpt.requires_grad = True
+  ypt = torch.log(xpt)
+  ypt.backward()
+
+  assert ymg.data == ypt.data.item(), "forward pass went wrong"
+  assert xmg.grad == xpt.grad.item(), "backward pass went wrong"
+
 def test_sanity_check():
 
   x = Value(-4.0)
@@ -59,7 +165,6 @@ def test_more_ops():
   g.backward()
   apt, bpt, gpt = a, b, g
 
-  tol = 1e-6
   # forward pass went well
   assert abs(gmg.data - gpt.data.item()) < tol
   # backward pass went well
