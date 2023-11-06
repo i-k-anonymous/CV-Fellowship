@@ -22,3 +22,15 @@ device string to use. Make a note of this device string for later.
 We will start out by re-implementing our iris network, to get you familiar with
 PyTorch syntax. Follow the steps in `iris.ipynb`.
 
+### Step Two
+
+Now that you have gotten acquainted with how PyTorch works, we will now construct
+a network that previously pushed the limits of our micrograd system: MNIST digit
+recognition. Complete the `mnist.ipynb` notebook.
+
+### Step Three
+
+Finally, we can touch on some computer vision techniques that are truly state
+of the art. We will implement an EfficientNet, a modern CNN that is in use in
+many real-world deployments, from phones to self-driving cars. Follow the steps
+listed in `cnn.ipynb`.
