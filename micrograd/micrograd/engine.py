@@ -23,21 +23,23 @@ class Value:
     return out
 
   def __mul__(self, other: Value | float):
-    other: Value = other if isinstance(other, Value) else Value(other)
-    out: Value = ... # TODO
+    other: Value = other if isinstance(other, Value) else Value(other) # convert to Value
+    out: Value = Value(self.data * other.data, (self, other), "*")
 
+    # chain rule!
     def _backward():
-      pass # TODO
+      self.grad += other.data * out.grad
+      other.grad += self.data * out.grad
     out._backward = _backward
 
     return out
   
   def __pow__(self, other: float):
     assert isinstance(other, (int, float)), "only supports int/float powers"
-    out: Value = ... # TODO
+    out: Value = Value(self.data ** other, (self,), f"**{other}")
 
     def _backward():
-      pass # TODO
+      self.grad += other * (self.data ** (other - 1)) * out.grad
     out._backward = _backward
 
     return out
@@ -45,20 +47,20 @@ class Value:
   # See https://en.wikipedia.org/wiki/Rectifier_(neural_networks)
   # Note that we define the derivative of ReLU at 0 to be 0
   def relu(self):
-    out: Value = ... # TODO
+    out: Value = (0 if self.data < 0 else self.data, (self,), "ReLU"
 
     def _backward():
-      pass # TODO
+      self.grad += (out.data > 0) * out.grad
     out._backward = _backward
 
     return out
   
   # returns e to the power self
   def exp(self):
-    out: Value = ... # TODO
+    out: Value = Value(math.e ** self.data, (self,), "exp")
 
     def _backward():
-      pass # TODO
+      self.grad += (math.e ** self.data) * out.grad
     out._backward = _backward
 
     return out
